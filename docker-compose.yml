@@ -11,5 +11,18 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build: ./backend
+    container_name: caja-ahorro-api
+    ports:
+      - "8080:8080"
+    environment:
+      spring.datasource.url: jdbc:postgresql://db:5432/caja_ahorro
+      spring.datasource.username: user
+      spring.datasource.password: password
+      spring.jpa.hibernate.ddl-auto: update
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
