@@ -1,9 +1,11 @@
-# Use Eclipse Temurin for Java 21
-FROM eclipse-temurin:21-jdk-jammy AS build
+# Build stage using Maven
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
-COPY . .
-RUN ./mvnw clean package -DskipTests
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
+# Run stage
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
